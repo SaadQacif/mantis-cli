@@ -11,6 +11,8 @@ import { registerDriveCommands } from '../lib/commands/drive.js';
 
 import { getContainer } from '../lib/container.js';
 
+import { wholeNumberOption } from '../lib/utils/numeric-option.js';
+
 import { parseUseCommand } from '../lib/utils/tool-args.js';
 
 import { PACKAGE_ROOT } from '../lib/utils/package-root.js';
@@ -104,9 +106,9 @@ function addListOptions(cmd) {
 
     .option('--filter <query>', 'search filter')
 
-    .option('--offset <n>', 'pagination offset', (v) => parseInt(v, 10) || 0)
+    .option('--offset <n>', 'pagination offset', wholeNumberOption('--offset', { min: 0 }))
 
-    .option('--limit <n>', 'page size', (v) => parseInt(v, 10) || 4);
+    .option('--limit <n>', 'page size', wholeNumberOption('--limit', { min: 1 }));
 
 }
 
@@ -467,7 +469,7 @@ addMapOptions(create
 
   .option('--out <file>', 'output CSV path')
 
-  .option('--max-chars <n>', 'max characters stored per file', (v) => Number(v), 12000)
+  .option('--max-chars <n>', 'max characters stored per file', wholeNumberOption('--max-chars', { min: 0 }), 12000)
 
   .option('--create-map', 'create a Mantis map after writing the CSV'))
 
